@@ -1,14 +1,18 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { LoginUserDto } from './dto/login-user.dto';
+import { User } from 'generated/prisma';
+import { UserDto } from 'src/users/dto/user.dto';
 
 @Injectable()
 export class AuthService {
     constructor( private prismaService: PrismaService) {}
 
-    Login( email: string, password: string ) {
+    //Login do Usuario 
+    async Login( userDto: LoginUserDto ): Promise<UserDto | null> {
         try {
-            const user = this.prismaService.user.findUnique({
-                where: { email },
+            const user = await this.prismaService.user.findUnique({
+                where: { email: userDto.email },
             });
 
             return user;
@@ -16,4 +20,5 @@ export class AuthService {
             throw new HttpException('Login failed: ', HttpStatus.UNAUTHORIZED);
         }
     }
+
 }
