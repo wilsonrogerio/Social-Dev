@@ -24,6 +24,9 @@ let UsersController = class UsersController {
     createUser(createUserDto) {
         return this.usersService.createUser(createUserDto);
     }
+    updateUser(id, updateUserDto) {
+        return this.usersService.updateUser(id, updateUserDto);
+    }
     findById(id) {
         return this.usersService.findById(id);
     }
@@ -36,6 +39,14 @@ __decorate([
     __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "createUser", null);
+__decorate([
+    (0, common_1.Patch)('update/:id'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, create_user_dto_1.CreateUserDto]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "updateUser", null);
 __decorate([
     (0, common_1.Get)('find/:id'),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),

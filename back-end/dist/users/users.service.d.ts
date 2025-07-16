@@ -8,4 +8,5 @@ export declare class UsersService {
     constructor(prismaService: PrismaService, hashService: BycriptService);
     createUser(createUserDto: CreateUserDto): Promise<UserDto>;
     findById(id: number): Promise<UserDto>;
+    updateUser(id: number, updateUserDto: CreateUserDto): Promise<UserDto>;
 }

@@ -57,4 +57,45 @@ export class UsersService {
             throw new HttpException('Algo deu errado ao buscar o usuário', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // Atualizar usuário pelo ID
+    async updateUser(id: number, updateUserDto: CreateUserDto): Promise<UserDto> {
+        try {
+            const userExists = await this.prismaService.user.findUnique({
+                where: { id },
+            });
+
+            if (!userExists) {
+                throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
+            }
+            // Verifica se a senha e igual a senha passada no update
+            const userPassword = await this.hashService.comparePassword(updateUserDto.password, userExists.password);
+          
+            if (!userPassword) {
+                throw new HttpException('Senha incorreta', HttpStatus.UNAUTHORIZED);
+            }
+            // Cria o hash da nova senha, se fornecida
+            const newPassword = await this.hashService.hashPassword(updateUserDto.password);
+
+            // Prepara os dados para atualização, incluindo a nova senha se fornecida
+            const updatedData: Partial<CreateUserDto> = {
+                name: updateUserDto.name,
+                password: newPassword ? newPassword : userExists.password, // Usa a nova senha se fornecida, caso contrário mantém a atual
+            };
+
+            // Prepara os dados para atualização, incluindo a nova senha se fornecida
+            const updatedUser = await this.prismaService.user.update({
+                where: { id: id },
+                data: updatedData,
+                select: {
+                    id: true, email: true, name: true, createdAt: true
+                }
+            });
+            return updatedUser;
+
+        } catch (error) {
+            throw new HttpException('Algo deu errado ao atualizar o usuário', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

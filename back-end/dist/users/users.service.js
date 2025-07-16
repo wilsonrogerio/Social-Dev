@@ -61,6 +61,36 @@ let UsersService = class UsersService {
             throw new common_1.HttpException('Algo deu errado ao buscar o usuário', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    async updateUser(id, updateUserDto) {
+        try {
+            const userExists = await this.prismaService.user.findUnique({
+                where: { id },
+            });
+            if (!userExists) {
+                throw new common_1.HttpException('Usuário não encontrado', common_1.HttpStatus.NOT_FOUND);
+            }
+            const userPassword = await this.hashService.comparePassword(updateUserDto.password, userExists.password);
+            if (!userPassword) {
+                throw new common_1.HttpException('Senha incorreta', common_1.HttpStatus.UNAUTHORIZED);
+            }
+            const newPassword = await this.hashService.hashPassword(updateUserDto.password);
+            const updatedData = {
+                name: updateUserDto.name,
+                password: newPassword ? newPassword : userExists.password,
+            };
+            const updatedUser = await this.prismaService.user.update({
+                where: { id: id },
+                data: updatedData,
+                select: {
+                    id: true, email: true, name: true, createdAt: true
+                }
+            });
+            return updatedUser;
+        }
+        catch (error) {
+            throw new common_1.HttpException('Algo deu errado ao atualizar o usuário', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([
