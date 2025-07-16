@@ -4,9 +4,9 @@ export declare class UsersController {
     private usersService;
     constructor(usersService: UsersService);
     createUser(createUserDto: CreateUserDto): Promise<{
-        email: string;
         id: number;
         name: string;
+        email: string;
         createdAt: Date;
     }>;
 }

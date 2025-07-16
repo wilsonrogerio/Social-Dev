@@ -12,17 +12,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../prisma/prisma.service");
+const hash_bycript_1 = require("../../utils/bycript/bycript/hash-bycript");
 let AuthService = class AuthService {
     prismaService;
-    constructor(prismaService) {
+    hashService;
+    constructor(prismaService, hashService) {
         this.prismaService = prismaService;
+        this.hashService = hashService;
     }
     async Login(userDto) {
         try {
             const user = await this.prismaService.user.findUnique({
                 where: { email: userDto.email },
             });
-            return user;
+            const passwordValid = await this.hashService.comparePassword(userDto.password, user.password);
+            if (!user || !passwordValid) {
+                throw new common_1.HttpException('Invalid credentials', common_1.HttpStatus.UNAUTHORIZED);
+            }
+            return { message: 'login realizado' };
         }
         catch (error) {
             throw new common_1.HttpException('Login failed: ', common_1.HttpStatus.UNAUTHORIZED);
@@ -32,6 +39,6 @@ let AuthService = class AuthService {
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService, hash_bycript_1.HashBycriptProtocol])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

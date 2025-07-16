@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { HashBycriptProtocol } from './hash-bycript';
 import * as bcrypt from 'bcryptjs';
 
-@Injectable()
+
 export class BycriptService extends HashBycriptProtocol{
 
     async hashPassword(password: string): Promise<string> {

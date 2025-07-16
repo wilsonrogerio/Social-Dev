@@ -23,7 +23,7 @@ __decorate([
 ], LoginUserDto.prototype, "email", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.MinLength)(6),
+    (0, class_validator_1.MinLength)(8),
     __metadata("design:type", String)
 ], LoginUserDto.prototype, "password", void 0);
 //# sourceMappingURL=login-user.dto.js.map

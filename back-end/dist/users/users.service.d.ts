@@ -6,9 +6,9 @@ export declare class UsersService {
     private hashService;
     constructor(prismaService: PrismaService, hashService: BycriptService);
     createUser(createUserDto: CreateUserDto): Promise<{
-        email: string;
         id: number;
         name: string;
+        email: string;
         createdAt: Date;
     }>;
 }
