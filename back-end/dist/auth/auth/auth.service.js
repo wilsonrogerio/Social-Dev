@@ -32,6 +32,7 @@ let AuthService = class AuthService {
             return { message: 'login realizado' };
         }
         catch (error) {
+            console.error('Login error:', error);
             throw new common_1.HttpException('Login failed: ', common_1.HttpStatus.UNAUTHORIZED);
         }
     }

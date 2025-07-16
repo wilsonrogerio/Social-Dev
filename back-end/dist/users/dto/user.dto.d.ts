@@ -5,6 +5,6 @@ export declare class UserDto {
     email: string;
     password?: string;
     createdAt: Date;
-    updatedAt: Date;
+    updatedAt?: Date;
     posts?: PostDto[];
 }

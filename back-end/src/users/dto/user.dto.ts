@@ -6,6 +6,6 @@ export class UserDto{
     email: string;
     password?: string; // Optional, as it may not be returned in some contexts
     createdAt: Date;
-    updatedAt: Date;
+    updatedAt?: Date;
     posts?: PostDto[]; // Optional, to include posts if needed
 }

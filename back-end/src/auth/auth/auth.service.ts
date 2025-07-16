@@ -26,7 +26,8 @@ export class AuthService {
 
             return { message : 'login realizado'};
         } catch (error) {
-            throw new HttpException('Login failed: ', HttpStatus.UNAUTHORIZED);
+            console.error('Login error:', error);
+            throw new HttpException('Login failed: ' , HttpStatus.UNAUTHORIZED);
         }
     }
 

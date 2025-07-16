@@ -3,10 +3,5 @@ import { CreateUserDto } from './dto/create-user.dto';
 export declare class UsersController {
     private usersService;
     constructor(usersService: UsersService);
-    createUser(createUserDto: CreateUserDto): Promise<{
-        id: number;
-        name: string;
-        email: string;
-        createdAt: Date;
-    }>;
+    createUser(createUserDto: CreateUserDto): Promise<import("./dto/user.dto").UserDto>;
 }

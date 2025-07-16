@@ -2,13 +2,14 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { BycriptService } from 'src/utils/bycript/bycript/bycript.service';
+import { UserDto } from './dto/user.dto';
 
 @Injectable()
 export class UsersService {
     constructor(private prismaService: PrismaService, private hashService: BycriptService) { }
 
     // Cria um novo usuário
-    async createUser(createUserDto: CreateUserDto) {
+    async createUser(createUserDto: CreateUserDto): Promise<UserDto> {
         try {
             // Verifica se o email já está cadastrado
             const emailExists = await this.prismaService.user.findUnique({

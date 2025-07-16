@@ -8,10 +8,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersModule = void 0;
 const common_1 = require("@nestjs/common");
+const users_controller_1 = require("./users.controller");
+const users_service_1 = require("./users.service");
+const hash_bycript_1 = require("../utils/bycript/bycript/hash-bycript");
+const bycript_service_1 = require("../utils/bycript/bycript/bycript.service");
+const prisma_module_1 = require("../prisma/prisma.module");
 let UsersModule = class UsersModule {
 };
 exports.UsersModule = UsersModule;
 exports.UsersModule = UsersModule = __decorate([
-    (0, common_1.Module)({})
+    (0, common_1.Module)({
+        controllers: [users_controller_1.UsersController],
+        providers: [users_service_1.UsersService,
+            bycript_service_1.BycriptService,
+            {
+                provide: hash_bycript_1.HashBycriptProtocol,
+                useClass: bycript_service_1.BycriptService,
+            }
+        ],
+        imports: [prisma_module_1.PrismaModule],
+    })
 ], UsersModule);
 //# sourceMappingURL=users.module.js.map
