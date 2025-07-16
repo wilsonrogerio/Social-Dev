@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
+
 
 @Controller('users')
 export class UsersController {
@@ -9,7 +10,12 @@ export class UsersController {
     //Cria um novo usuário
     @Post('create')
     createUser(@Body() createUserDto: CreateUserDto) {
-        console.log(createUserDto);
         return this.usersService.createUser(createUserDto);
+    }
+
+    // Busca usuario por ID
+    @Get('find/:id')
+    findById(@Param('id', ParseIntPipe) id: number) {
+        return this.usersService.findById(id);
     }
 }

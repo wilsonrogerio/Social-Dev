@@ -37,4 +37,24 @@ export class UsersService {
             throw new HttpException('Algo deu errado ao criar o usuário', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // Busca usuário por ID
+    async findById(id: number): Promise<UserDto> {
+        try {
+            // Busca o usuário no banco de dados pelo ID
+            const user = await this.prismaService.user.findUnique({
+                where: { id },
+                select: {
+                    id: true, email: true, name: true, createdAt: true
+                }
+            });
+            if (!user) {
+                // Se o usuário não for encontrado, lança uma exceção
+                throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
+            }
+            return user; // Retorna o usuário encontrado
+        } catch (error) {
+            throw new HttpException('Algo deu errado ao buscar o usuário', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

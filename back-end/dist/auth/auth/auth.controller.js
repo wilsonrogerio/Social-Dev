@@ -22,7 +22,6 @@ let AuthController = class AuthController {
         this.authService = authService;
     }
     Login(userDto) {
-        console.log('Login attempt with user:', userDto);
         return this.authService.Login(userDto);
     }
 };

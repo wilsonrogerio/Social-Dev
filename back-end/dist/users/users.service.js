@@ -44,6 +44,23 @@ let UsersService = class UsersService {
             throw new common_1.HttpException('Algo deu errado ao criar o usuário', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    async findById(id) {
+        try {
+            const user = await this.prismaService.user.findUnique({
+                where: { id },
+                select: {
+                    id: true, email: true, name: true, createdAt: true
+                }
+            });
+            if (!user) {
+                throw new common_1.HttpException('Usuário não encontrado', common_1.HttpStatus.NOT_FOUND);
+            }
+            return user;
+        }
+        catch (error) {
+            throw new common_1.HttpException('Algo deu errado ao buscar o usuário', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([
