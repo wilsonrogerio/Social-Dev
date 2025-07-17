@@ -15,7 +15,7 @@ export class UsersController {
     }
 
     // Rota publica de buscar usuario pelo nome
-    @Get('findByName/:name')
+    @Get('findbyname/:name')
     findByName(@Param('name') name: string) {
         return this.usersService.findByName(name);
     }

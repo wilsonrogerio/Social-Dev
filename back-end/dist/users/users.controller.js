@@ -47,7 +47,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "createUser", null);
 __decorate([
-    (0, common_1.Get)('findByName/:name'),
+    (0, common_1.Get)('findbyname/:name'),
     __param(0, (0, common_1.Param)('name')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

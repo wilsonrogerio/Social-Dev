@@ -72,6 +72,12 @@ export class UsersService {
                     id: true, email: true, name: true, createdAt: true
                 }
             });
+
+            // Verifica se nenhum usuário foi encontrado
+            if (users.length === 0 || !users) {
+                // Se nenhum usuário for encontrado, lança uma exceção
+                throw new HttpException('Nenhum usuário encontrado com esse nome', HttpStatus.NOT_FOUND);
+            }
             return users; // Retorna os usuários encontrados
         } catch (error) {
             throw new HttpException('Algo deu errado ao buscar usuários', HttpStatus.INTERNAL_SERVER_ERROR);

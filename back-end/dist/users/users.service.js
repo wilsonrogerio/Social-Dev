@@ -70,6 +70,9 @@ let UsersService = class UsersService {
                     id: true, email: true, name: true, createdAt: true
                 }
             });
+            if (users.length === 0 || !users) {
+                throw new common_1.HttpException('Nenhum usuário encontrado com esse nome', common_1.HttpStatus.NOT_FOUND);
+            }
             return users;
         }
         catch (error) {
