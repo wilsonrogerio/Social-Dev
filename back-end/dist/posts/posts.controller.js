@@ -29,6 +29,14 @@ let PostsController = class PostsController {
         const user = req.user['userId'];
         return this.postsService.create(postData, user);
     }
+    update(id, postData, req) {
+        const user = req.user['userId'];
+        return this.postsService.update(id, postData, user);
+    }
+    delete(req, id) {
+        const user = req.user['userId'];
+        return this.postsService.delete(id, user);
+    }
 };
 exports.PostsController = PostsController;
 __decorate([
@@ -47,6 +55,25 @@ __decorate([
     __metadata("design:paramtypes", [post_dto_1.PostDto, Object]),
     __metadata("design:returntype", void 0)
 ], PostsController.prototype, "create", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_verify_guard_1.JwtVerifyGuard),
+    (0, common_1.Patch)('update/:id'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, post_dto_1.PostDto, Object]),
+    __metadata("design:returntype", void 0)
+], PostsController.prototype, "update", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_verify_guard_1.JwtVerifyGuard),
+    (0, common_1.Delete)('delete/:id'),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Number]),
+    __metadata("design:returntype", void 0)
+], PostsController.prototype, "delete", null);
 exports.PostsController = PostsController = __decorate([
     (0, common_1.Controller)('posts'),
     __metadata("design:paramtypes", [posts_service_1.PostsService])

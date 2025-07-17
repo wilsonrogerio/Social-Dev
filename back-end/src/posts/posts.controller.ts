@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Request, UseGuards } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { PostDto } from './dto/post.dto';
 import { JwtVerifyGuard } from 'src/auth/guards/jwt-verify.guard';
@@ -23,5 +23,18 @@ export class PostsController {
     }
 
     // Atualiza um post
+    @UseGuards(JwtVerifyGuard)
+    @Patch('update/:id')
+    update(@Param('id', ParseIntPipe) id: number, @Body() postData: PostDto, @Request() req) {
+        const user = req.user['userId']; // Obtém o usuário do token JWT
+        return this.postsService.update(id, postData, user);
+    }
 
+    // Deletar um post
+    @UseGuards(JwtVerifyGuard)
+    @Delete('delete/:id')
+    delete(@Request() req, @Param('id' , ParseIntPipe) id: number) {
+        const user = req.user['userId']; // Obtém o usuário do token JWT
+        return this.postsService.delete(id, user);
+    }
 }

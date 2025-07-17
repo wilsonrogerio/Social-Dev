@@ -54,6 +54,37 @@ let PostsService = class PostsService {
             throw new common_1.HttpException('Erro ao criar o post', common_1.HttpStatus.BAD_REQUEST);
         }
     }
+    async update(id, postData, userId) {
+        const post = await this.prismaService.post.findUnique({
+            where: { id },
+        });
+        if (!post) {
+            throw new common_1.HttpException('Post não encontrado', common_1.HttpStatus.NOT_FOUND);
+        }
+        if (post.authorId !== userId) {
+            throw new common_1.HttpException('Você não tem permissão para atualizar este post', common_1.HttpStatus.FORBIDDEN);
+        }
+        const postUpdated = await this.prismaService.post.update({
+            where: { id },
+            data: postData,
+        });
+        return postUpdated;
+    }
+    async delete(id, userId) {
+        const post = await this.prismaService.post.findUnique({
+            where: { id },
+        });
+        if (!post) {
+            throw new common_1.HttpException('Post não encontrado', common_1.HttpStatus.NOT_FOUND);
+        }
+        if (post.authorId !== userId) {
+            throw new common_1.HttpException('Você não tem permissão para deletar este post', common_1.HttpStatus.FORBIDDEN);
+        }
+        await this.prismaService.post.delete({
+            where: { id },
+        });
+        return { message: 'Post deletado com sucesso' };
+    }
 };
 exports.PostsService = PostsService;
 exports.PostsService = PostsService = __decorate([
