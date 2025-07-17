@@ -20,13 +20,13 @@ let PostsService = class PostsService {
     async findAll() {
         return this.prismaService.post.findMany();
     }
-    async create(postData) {
+    async create(postData, userId) {
         try {
-            if (!postData.title || !postData.authorId || !postData.content) {
+            if (!postData.title || !postData.content) {
                 throw new Error('Faltam campos obrigatórios');
             }
             const authorExists = await this.prismaService.user.findUnique({
-                where: { id: postData.authorId },
+                where: { id: userId },
             });
             if (!authorExists) {
                 throw new common_1.HttpException('Algo saiu errado', common_1.HttpStatus.UNAUTHORIZED);
@@ -35,7 +35,7 @@ let PostsService = class PostsService {
                 data: {
                     title: postData.title,
                     content: postData.content,
-                    authorId: postData.authorId,
+                    authorId: userId,
                 },
                 include: {
                     author: {

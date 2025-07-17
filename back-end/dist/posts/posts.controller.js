@@ -16,6 +16,7 @@ exports.PostsController = void 0;
 const common_1 = require("@nestjs/common");
 const posts_service_1 = require("./posts.service");
 const post_dto_1 = require("./dto/post.dto");
+const jwt_verify_guard_1 = require("../auth/guards/jwt-verify.guard");
 let PostsController = class PostsController {
     postsService;
     constructor(postsService) {
@@ -24,22 +25,26 @@ let PostsController = class PostsController {
     findAll() {
         return this.postsService.findAll();
     }
-    create(postData) {
-        return this.postsService.create(postData);
+    create(postData, req) {
+        const user = req.user['userId'];
+        return this.postsService.create(postData, user);
     }
 };
 exports.PostsController = PostsController;
 __decorate([
+    (0, common_1.UseGuards)(jwt_verify_guard_1.JwtVerifyGuard),
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], PostsController.prototype, "findAll", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_verify_guard_1.JwtVerifyGuard),
     (0, common_1.Post)('create'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [post_dto_1.PostDto]),
+    __metadata("design:paramtypes", [post_dto_1.PostDto, Object]),
     __metadata("design:returntype", void 0)
 ], PostsController.prototype, "create", null);
 exports.PostsController = PostsController = __decorate([

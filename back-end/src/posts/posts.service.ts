@@ -12,16 +12,16 @@ export class PostsService {
     }
 
     // Cria um novo post
-    async create(postData: PostDto): Promise<PostDto> {
+    async create(postData: PostDto , userId : number): Promise<PostDto> {
         try {
             //Verifica se o postData contém os campos necessários
-            if (!postData.title || !postData.authorId || !postData.content) {
+            if (!postData.title || !postData.content) {
                 throw new Error('Faltam campos obrigatórios');
             }
 
             // Verifica se o id do autor é válido
             const authorExists = await this.prismaService.user.findUnique({
-                where: { id: postData.authorId },
+                where: { id: userId },
             });
             if (!authorExists) {
                 throw new HttpException('Algo saiu errado', HttpStatus.UNAUTHORIZED);
@@ -31,7 +31,7 @@ export class PostsService {
                 data: {
                     title: postData.title,
                     content: postData.content,
-                    authorId: postData.authorId, // Referência ao usuário
+                    authorId: userId, // Referência ao usuário
                 },
                 include: {
                     author: {

@@ -4,5 +4,5 @@ export declare class PostsService {
     private readonly prismaService;
     constructor(prismaService: PrismaService);
     findAll(): Promise<PostDto[]>;
-    create(postData: PostDto): Promise<PostDto>;
+    create(postData: PostDto, userId: number): Promise<PostDto>;
 }
