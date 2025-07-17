@@ -7,5 +7,6 @@ export declare class AuthService {
     constructor(prismaService: PrismaService, hashService: HashBycriptProtocol);
     Login(userDto: LoginUserDto): Promise<{
         message: string;
+        token: string;
     }>;
 }

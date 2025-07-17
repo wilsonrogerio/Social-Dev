@@ -1,8 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { LoginUserDto } from './dto/login-user.dto';
-import { UserDto } from 'src/users/dto/user.dto';
 import { HashBycriptProtocol } from 'src/utils/bycript/bycript/hash-bycript';
+import { JwtUtil } from 'src/utils/jwt/jwt-token';
+
 
 @Injectable()
 export class AuthService {
@@ -23,8 +24,10 @@ export class AuthService {
             if (!user || !passwordValid) {
                 throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
             }
+            // Cria o token JWT
+            const token = JwtUtil.createToken({userName : user.name, userId: user.id}, "24h")
 
-            return { message : 'login realizado'};
+            return { message : 'login realizado' , token : token};
         } catch (error) {
             console.error('Login error:', error);
             throw new HttpException('Login failed: ' , HttpStatus.UNAUTHORIZED);

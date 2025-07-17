@@ -13,6 +13,7 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../prisma/prisma.service");
 const hash_bycript_1 = require("../../utils/bycript/bycript/hash-bycript");
+const jwt_token_1 = require("../../utils/jwt/jwt-token");
 let AuthService = class AuthService {
     prismaService;
     hashService;
@@ -29,7 +30,8 @@ let AuthService = class AuthService {
             if (!user || !passwordValid) {
                 throw new common_1.HttpException('Invalid credentials', common_1.HttpStatus.UNAUTHORIZED);
             }
-            return { message: 'login realizado' };
+            const token = jwt_token_1.JwtUtil.createToken({ userName: user.name, userId: user.id }, "24h");
+            return { message: 'login realizado', token: token };
         }
         catch (error) {
             console.error('Login error:', error);
