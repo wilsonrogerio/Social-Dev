@@ -69,14 +69,17 @@ let UsersService = class UsersService {
             if (!userExists) {
                 throw new common_1.HttpException('Usuário não encontrado', common_1.HttpStatus.NOT_FOUND);
             }
-            const userPassword = await this.hashService.comparePassword(updateUserDto.password, userExists.password);
+            const userPassword = await this.hashService.comparePassword(updateUserDto.actualPassword, userExists.password);
             if (!userPassword) {
                 throw new common_1.HttpException('Senha incorreta', common_1.HttpStatus.UNAUTHORIZED);
             }
-            const newPassword = await this.hashService.hashPassword(updateUserDto.password);
+            if (updateUserDto.newPassword === updateUserDto.actualPassword) {
+                throw new common_1.HttpException('A nova senha deve ser diferente da senha atual', common_1.HttpStatus.BAD_REQUEST);
+            }
+            const newPassword = updateUserDto.newPassword ? await this.hashService.hashPassword(updateUserDto.newPassword) : updateUserDto.actualPassword;
             const updatedData = {
                 name: updateUserDto.name,
-                password: newPassword ? newPassword : userExists.password,
+                password: newPassword
             };
             const updatedUser = await this.prismaService.user.update({
                 where: { id: id },
@@ -88,6 +91,7 @@ let UsersService = class UsersService {
             return updatedUser;
         }
         catch (error) {
+            console.log(error);
             throw new common_1.HttpException('Algo deu errado ao atualizar o usuário', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

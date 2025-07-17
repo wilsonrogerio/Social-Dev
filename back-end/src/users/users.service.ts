@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { BycriptService } from 'src/utils/bycript/bycript/bycript.service';
 import { UserDto } from './dto/user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -59,8 +60,9 @@ export class UsersService {
     }
 
     // Atualizar usuário pelo ID
-    async updateUser(id: number, updateUserDto: CreateUserDto): Promise<UserDto> {
+    async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<UserDto> {
         try {
+            // Verifica se o usuário existe pelo ID
             const userExists = await this.prismaService.user.findUnique({
                 where: { id },
             });
@@ -69,18 +71,23 @@ export class UsersService {
                 throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
             }
             // Verifica se a senha e igual a senha passada no update
-            const userPassword = await this.hashService.comparePassword(updateUserDto.password, userExists.password);
+            const userPassword = await this.hashService.comparePassword(updateUserDto.actualPassword, userExists.password);
           
             if (!userPassword) {
                 throw new HttpException('Senha incorreta', HttpStatus.UNAUTHORIZED);
             }
-            // Cria o hash da nova senha, se fornecida
-            const newPassword = await this.hashService.hashPassword(updateUserDto.password);
+            // Verifica se a senha nova e diferente da senha atual
+            if (updateUserDto.newPassword  === updateUserDto.actualPassword ) {
+                throw new HttpException('A nova senha deve ser diferente da senha atual', HttpStatus.BAD_REQUEST);
+            }
+           
+            // Se uma nova senha for fornecida, cria o hash da nova senha
+            const newPassword = updateUserDto.newPassword ? await this.hashService.hashPassword(updateUserDto.newPassword) : updateUserDto.actualPassword;
 
             // Prepara os dados para atualização, incluindo a nova senha se fornecida
             const updatedData: Partial<CreateUserDto> = {
                 name: updateUserDto.name,
-                password: newPassword ? newPassword : userExists.password, // Usa a nova senha se fornecida, caso contrário mantém a atual
+                password: newPassword 
             };
 
             // Prepara os dados para atualização, incluindo a nova senha se fornecida
@@ -94,6 +101,7 @@ export class UsersService {
             return updatedUser;
 
         } catch (error) {
+            console.log(error);
             throw new HttpException('Algo deu errado ao atualizar o usuário', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
