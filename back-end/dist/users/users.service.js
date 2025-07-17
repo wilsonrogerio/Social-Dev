@@ -95,6 +95,23 @@ let UsersService = class UsersService {
             throw new common_1.HttpException('Algo deu errado ao atualizar o usuário', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    async deleteUser(id) {
+        try {
+            const userExists = await this.prismaService.user.findUnique({
+                where: { id },
+            });
+            if (!userExists) {
+                throw new common_1.HttpException('Usuário não encontrado', common_1.HttpStatus.NOT_FOUND);
+            }
+            await this.prismaService.user.delete({
+                where: { id },
+            });
+            return { message: 'Usuário excluído com sucesso' };
+        }
+        catch (error) {
+            throw new common_1.HttpException('Algo deu errado ao excluir o usuário', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([

@@ -106,4 +106,26 @@ export class UsersService {
         }
     }
 
+    // Excluir usuário pelo ID
+    async deleteUser(id: number): Promise<{ message: string }> {
+        try {
+            // Verifica se o usuário existe pelo ID
+            const userExists = await this.prismaService.user.findUnique({
+                where: { id },
+            });
+
+            if (!userExists) {
+                throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
+            }
+
+            // Exclui o usuário do banco de dados
+            await this.prismaService.user.delete({
+                where: { id },
+            });
+            return { message: 'Usuário excluído com sucesso' }; // Retorna uma mensagem de sucesso
+        } catch (error) {
+            throw new HttpException('Algo deu errado ao excluir o usuário', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

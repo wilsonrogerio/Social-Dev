@@ -7,4 +7,7 @@ export declare class UsersController {
     createUser(createUserDto: CreateUserDto): Promise<import("./dto/user.dto").UserDto>;
     updateUser(id: number, updateUserDto: UpdateUserDto): Promise<import("./dto/user.dto").UserDto>;
     findById(id: number): Promise<import("./dto/user.dto").UserDto>;
+    deleteUser(id: number): Promise<{
+        message: string;
+    }>;
 }
