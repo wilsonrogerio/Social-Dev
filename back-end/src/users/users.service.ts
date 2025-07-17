@@ -22,6 +22,7 @@ export class UsersService {
             }
             // Cria o hash da senha usando o serviço de hash
             const hashedPassword = await this.hashService.hashPassword(createUserDto.password);
+            
             // Cria o usuário no banco de dados
             const user = await this.prismaService.user.create({
                 data: {
@@ -56,6 +57,24 @@ export class UsersService {
             return user; // Retorna o usuário encontrado
         } catch (error) {
             throw new HttpException('Algo deu errado ao buscar o usuário', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Busca usuário pelo nome
+    async findByName(name: string): Promise<UserDto[]> {
+        try {
+            // Converte o nome para minúsculas para busca case insensitive            
+            let nameLower = name.toLowerCase();
+            // Busca usuários no banco de dados pelo nome
+            const users = await this.prismaService.user.findMany({
+                where: { name: { contains: nameLower } }, // Busca por nome com case insensitive
+                select: {
+                    id: true, email: true, name: true, createdAt: true
+                }
+            });
+            return users; // Retorna os usuários encontrados
+        } catch (error) {
+            throw new HttpException('Algo deu errado ao buscar usuários', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

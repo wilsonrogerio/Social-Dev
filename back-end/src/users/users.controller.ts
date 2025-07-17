@@ -14,6 +14,12 @@ export class UsersController {
         return this.usersService.createUser(createUserDto);
     }
 
+    // Rota publica de buscar usuario pelo nome
+    @Get('findByName/:name')
+    findByName(@Param('name') name: string) {
+        return this.usersService.findByName(name);
+    }
+
     //Atualizar usuário
     @Patch('update/:id')
     updateUser(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {

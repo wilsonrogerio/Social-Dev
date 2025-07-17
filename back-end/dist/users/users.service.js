@@ -61,6 +61,21 @@ let UsersService = class UsersService {
             throw new common_1.HttpException('Algo deu errado ao buscar o usuário', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    async findByName(name) {
+        try {
+            let nameLower = name.toLowerCase();
+            const users = await this.prismaService.user.findMany({
+                where: { name: { contains: nameLower } },
+                select: {
+                    id: true, email: true, name: true, createdAt: true
+                }
+            });
+            return users;
+        }
+        catch (error) {
+            throw new common_1.HttpException('Algo deu errado ao buscar usuários', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     async updateUser(id, updateUserDto) {
         try {
             const userExists = await this.prismaService.user.findUnique({
