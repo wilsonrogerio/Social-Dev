@@ -8,7 +8,7 @@ class PostDto {
     authorId;
     createdAt;
     updatedAt;
-    author;
+    authorName;
 }
 exports.PostDto = PostDto;
 //# sourceMappingURL=post.dto.js.map
