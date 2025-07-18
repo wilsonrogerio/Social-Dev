@@ -34,16 +34,14 @@ export class Login {
     };
 
     this.authService.login(loginData).subscribe({
-      next: () => {
-        console.log('Login successful');
-        this.router.navigate(['/']); // Redireciona para a página inicial após o login
+      next: (res) => {
+        this.router.navigate(['feed']);
       },
       error: (err) => {
+        this.router.navigate(['']);
         console.error('Login failed', err);
       }
 
-    }
-
-    );
+    });
   }
 }
