@@ -6,7 +6,12 @@ export declare class AuthService {
     private hashService;
     constructor(prismaService: PrismaService, hashService: HashBycriptProtocol);
     Login(userDto: LoginUserDto): Promise<{
-        message: string;
+        user: {
+            id: number;
+            email: string;
+            name: string;
+            createdAt: Date;
+        };
         token: string;
     }>;
 }

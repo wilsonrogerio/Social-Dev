@@ -31,7 +31,13 @@ let AuthService = class AuthService {
                 throw new common_1.HttpException('Invalid credentials', common_1.HttpStatus.UNAUTHORIZED);
             }
             const token = jwt_token_1.JwtUtil.createToken({ userName: user.name, userId: user.id }, "24h");
-            return { message: 'login realizado', token: token };
+            const userData = {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                createdAt: user.createdAt,
+            };
+            return { user: userData, token: token };
         }
         catch (error) {
             console.error('Login error:', error);
