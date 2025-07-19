@@ -9,7 +9,7 @@
     @if (posts$ != null) {
       @for (post of posts$ | async; track $index) {
         <div class="post">
-          <div class="post-user">{{ post }}</div>
+          <div class="post-user">{{ post.author.name }}</div>
           <div class="post-content">{{ post.title }}</div>
           <div class="post-date">{{ post.content }}</div>
         </div>
