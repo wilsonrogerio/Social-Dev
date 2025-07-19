@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { PostDto } from './dto/post.dto';
+import { PostDto, PostWithAuthorDto } from './dto/post.dto';
 
 @Injectable()
 export class PostsService {
@@ -8,11 +8,35 @@ export class PostsService {
 
     //Resgata todos os posts
     async findAll(): Promise<PostDto[]> {
-        return this.prismaService.post.findMany();
+        try {
+            const postsList = await this.prismaService.post.findMany({
+                include: {
+                    author: {
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                            createdAt: true,
+                            updatedAt: true,
+                        }
+                    }
+                }
+            });
+
+            // Verifica se a lista de posts está vazia
+            if (!postsList || postsList.length === 0) {
+                throw new HttpException('Nenhum post encontrado', HttpStatus.NOT_FOUND);
+            }
+            return postsList;
+
+        } catch (error) {
+            throw new HttpException('Erro ao buscar posts', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     // Cria um novo post
-    async create(postData: PostDto , userId : number): Promise<PostDto> {
+    async create(postData: PostDto, userId: number): Promise<PostDto> {
         try {
             //Verifica se o postData contém os campos necessários
             if (!postData.title || !postData.content) {
@@ -39,9 +63,11 @@ export class PostsService {
                             id: true,
                             name: true,
                             email: true,
+                            createdAt: true,
                         }, // Retorna os dados do usuário autor
                     },
-                }});
+                }
+            });
 
             return newPost;
         } catch (error) {
@@ -69,12 +95,27 @@ export class PostsService {
         // Atualiza o post
         const postUpdated = await this.prismaService.post.update({
             where: { id },
-            data: postData,
+            data: {
+                title: postData.title,
+                content: postData.content,
+                // outros campos do modelo Post, se houver
+            },
+            include: {
+                author: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        createdAt: true,
+                        updatedAt: true,
+                    }
+                }
+            }
         });
         return postUpdated;
     }
     // Deletar um post
-    async delete(id: number , userId : number): Promise<{ message: string }> {
+    async delete(id: number, userId: number): Promise<{ message: string }> {
         const post = await this.prismaService.post.findUnique({
             where: { id },
         });

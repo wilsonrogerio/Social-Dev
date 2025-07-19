@@ -6,5 +6,7 @@ export declare class PostDto {
     authorId: number;
     createdAt: Date;
     updatedAt: Date;
-    authorName?: UserDto['name'];
+    author: UserDto;
+}
+export declare class PostWithAuthorDto extends PostDto {
 }

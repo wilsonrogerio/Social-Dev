@@ -18,7 +18,28 @@ let PostsService = class PostsService {
         this.prismaService = prismaService;
     }
     async findAll() {
-        return this.prismaService.post.findMany();
+        try {
+            const postsList = await this.prismaService.post.findMany({
+                include: {
+                    author: {
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                            createdAt: true,
+                            updatedAt: true,
+                        }
+                    }
+                }
+            });
+            if (!postsList || postsList.length === 0) {
+                throw new common_1.HttpException('Nenhum post encontrado', common_1.HttpStatus.NOT_FOUND);
+            }
+            return postsList;
+        }
+        catch (error) {
+            throw new common_1.HttpException('Erro ao buscar posts', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     async create(postData, userId) {
         try {
@@ -43,6 +64,7 @@ let PostsService = class PostsService {
                             id: true,
                             name: true,
                             email: true,
+                            createdAt: true,
                         },
                     },
                 }
@@ -66,7 +88,21 @@ let PostsService = class PostsService {
         }
         const postUpdated = await this.prismaService.post.update({
             where: { id },
-            data: postData,
+            data: {
+                title: postData.title,
+                content: postData.content,
+            },
+            include: {
+                author: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        createdAt: true,
+                        updatedAt: true,
+                    }
+                }
+            }
         });
         return postUpdated;
     }

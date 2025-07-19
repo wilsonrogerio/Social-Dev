@@ -1,15 +1,23 @@
 <div class="feed">
   <div class="feed-header">
-    <h1>Feed</h1>
+    <h1>Social .Dev</h1>
     <div class="user-info">
       <span class="user-name"> Nome do Usuario</span>
     </div>
   </div>
   <div class="posts">
-    <div class="post" *ngFor="let post of posts$ | async">
-      <div class="post-user">{{ post.authorId }}</div>
-      <div class="post-content">{{ post.title }}</div>
-      <div class="post-date">{{ post.content }}</div>
-    </div>
+    @if (posts$ != null) {
+      @for (post of posts$ | async; track $index) {
+        <div class="post">
+          <div class="post-user">{{ post }}</div>
+          <div class="post-content">{{ post.title }}</div>
+          <div class="post-date">{{ post.content }}</div>
+        </div>
+      }
+    }
+    @else {
+      <div class="loading">Carregando posts...</div>
+    } 
+
   </div>
 </div>

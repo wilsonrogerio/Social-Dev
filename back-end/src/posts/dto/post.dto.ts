@@ -7,5 +7,8 @@ export class PostDto {
     authorId: number; // Assuming this is the ID of the user who created the post
     createdAt: Date;
     updatedAt: Date;
-    authorName?: UserDto['name']; // Optional, to include author's name if needed
+    author: UserDto; // Optional, to include author's name if needed
+}
+
+export class PostWithAuthorDto extends PostDto {
 }
