@@ -1,0 +1,47 @@
+.header {
+  background: #23272f;
+  color: #fff;
+  padding: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.header-title {
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.user-label {
+  color: #b0b0b0;
+  font-size: 1rem;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #4fd1c5;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 4px 8px;
+  border-radius: 4px;
+  &:hover {
+    color: #319795;
+    background: rgba(79,209,197,0.08);
+    text-decoration: underline;
+  }
+}

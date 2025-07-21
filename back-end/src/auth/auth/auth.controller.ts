@@ -10,6 +10,10 @@ export class AuthController {
     Login(@Body() userDto: LoginUserDto) {
         return this.authService.Login(userDto);
     }
+    @Post('validate')
+    validateUser(@Body('token') token: string) {
+        return this.authService.validateUser(token);
+    }
     
         
 }

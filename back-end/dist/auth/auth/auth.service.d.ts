@@ -14,4 +14,10 @@ export declare class AuthService {
         };
         token: string;
     }>;
+    validateUser(token: string): Promise<{
+        id: number;
+        email: string;
+        name: string;
+        createdAt: Date;
+    }>;
 }

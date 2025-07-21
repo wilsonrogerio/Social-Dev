@@ -1,6 +1,6 @@
 export interface ILoginResponse {
   user: {
-    id: string;
+    id: number;
     name: string;
     email: string;
     createdAt: Date;

@@ -35,11 +35,12 @@ export class Login {
 
     this.authService.login(loginData).subscribe({
       next: (res) => {
+        
         this.router.navigate(['feed']);
       },
       error: (err) => {
         this.router.navigate(['']);
-        console.error('Login failed', err);
+        
       }
 
     });

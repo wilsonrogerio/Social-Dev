@@ -1,10 +1,5 @@
+<app-header></app-header>
 <div class="feed">
-  <div class="feed-header">
-    <h1>Social .Dev</h1>
-    <div class="user-info">
-      <span class="user-name"> Nome do Usuario</span>
-    </div>
-  </div>
   <div class="posts">
     @if (posts$ != null) {
       @for (post of posts$ | async; track $index) {

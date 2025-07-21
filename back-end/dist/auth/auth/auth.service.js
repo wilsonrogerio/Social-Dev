@@ -44,6 +44,29 @@ let AuthService = class AuthService {
             throw new common_1.HttpException('Login failed: ', common_1.HttpStatus.UNAUTHORIZED);
         }
     }
+    async validateUser(token) {
+        try {
+            const tokenValid = jwt_token_1.JwtUtil.verifyToken(token);
+            if (!tokenValid) {
+                throw new common_1.HttpException('Token inválido', common_1.HttpStatus.UNAUTHORIZED);
+            }
+            const user = await this.prismaService.user.findUnique({
+                where: { id: tokenValid.userId },
+            });
+            if (!user) {
+                throw new common_1.HttpException('Usuário não encontrado', common_1.HttpStatus.NOT_FOUND);
+            }
+            return {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                createdAt: user.createdAt,
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException('Token inválido', common_1.HttpStatus.UNAUTHORIZED);
+        }
+    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([

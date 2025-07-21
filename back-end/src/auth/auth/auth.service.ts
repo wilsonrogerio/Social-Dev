@@ -41,4 +41,28 @@ export class AuthService {
         }
     }
 
+    // verifica o token JWt e retorna o usuário
+    async validateUser(token: string) {
+        try {
+            const tokenValid = JwtUtil.verifyToken(token);
+            if (!tokenValid) {
+                throw new HttpException('Token inválido', HttpStatus.UNAUTHORIZED);
+            }
+            const user = await this.prismaService.user.findUnique({
+                where: { id: tokenValid.userId },
+            });
+            if (!user) {
+                throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND);
+            }
+            return {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                createdAt: user.createdAt,
+            };
+        } catch (error) {
+            throw new HttpException('Token inválido', HttpStatus.UNAUTHORIZED);
+        }
+    }   
+
 }

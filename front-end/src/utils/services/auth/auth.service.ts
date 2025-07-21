@@ -5,12 +5,15 @@ import { map } from "rxjs";
 import { environment } from "../../../environment/environment";
 import { IAuthRegister } from "../../interfaces/auth-interface/auth-register";
 import { ILoginResponse } from "../../interfaces/users-interfaces/login-reponse";
+import { UserStateService } from "../users/user-state-service";
+import { IUserResponse } from "../../interfaces/users-interfaces/user-reponse";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private httpClientService = inject(HttpClient);
+  private userStateService = inject(UserStateService);
 
   login(userLoginData: IAuthLogin) {
     // Envia os dados de login para o servidor e espera receber um token de autenticação
@@ -21,8 +24,10 @@ export class AuthService {
         if (token) {
           localStorage.setItem('token', token);
         }
-        return res;
+        this.userStateService.setUser(res.user);
+        return res.user;
       })
+      
     );
   }
 
@@ -35,5 +40,12 @@ export class AuthService {
       })
     );
 
+  }
+
+  
+  logout() {
+    // Limpa o token do localStorage e atualiza o estado do usuário
+    localStorage.removeItem('token');
+    this.userStateService.setUser(null);
   }
 }
