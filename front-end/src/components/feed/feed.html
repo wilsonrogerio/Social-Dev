@@ -1,12 +1,21 @@
 <app-header></app-header>
 <div class="feed">
+  <div class="create-header">
+    <a routerLink=""><img src="/login-image.png" alt=""></a>
+    <button class="btn" (click)="createPostVisible = !createPostVisible">Criar</button>
+  </div>
+  <div class="create-post">
+    @if(createPostVisible) {
+      <app-create-post (postCreated)="createPostVisible = false"></app-create-post>
+    }
+  </div>
   <div class="posts">
     @if (posts$ != null) {
       @for (post of posts$ | async; track $index) {
         <div class="post">
           <div class="post-user">{{ post.author.name }}</div>
-          <div class="post-content">{{ post.title }}</div>
-          <div class="post-date">{{ post.content }}</div>
+          <div class="post-title">{{ post.title }}</div>
+          <div class="post-content">{{ post.content }}</div>
         </div>
       }
     }

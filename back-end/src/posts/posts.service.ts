@@ -20,6 +20,8 @@ export class PostsService {
                             updatedAt: true,
                         }
                     }
+                },orderBy: {
+                    createdAt: 'desc', 
                 }
             });
 
@@ -27,7 +29,7 @@ export class PostsService {
             if (!postsList || postsList.length === 0) {
                 throw new HttpException('Nenhum post encontrado', HttpStatus.NOT_FOUND);
             }
-            return postsList;
+            return postsList ;
 
         } catch (error) {
             throw new HttpException('Erro ao buscar posts', HttpStatus.INTERNAL_SERVER_ERROR);

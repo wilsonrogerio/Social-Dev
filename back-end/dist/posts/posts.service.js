@@ -30,6 +30,8 @@ let PostsService = class PostsService {
                             updatedAt: true,
                         }
                     }
+                }, orderBy: {
+                    createdAt: 'desc',
                 }
             });
             if (!postsList || postsList.length === 0) {

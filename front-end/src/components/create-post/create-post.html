@@ -1,0 +1,7 @@
+<div class="create-post">
+    <form  [formGroup]="formPost" (ngSubmit)="createPost()">
+        <input type="text" placeholder="Digite seu Titulo" formControlName="title"/>
+        <input type="text" placeholder="Postagem...?" formControlName="content"/>
+        <button type="submit">Criar</button>
+    </form>
+</div>

@@ -1,0 +1,48 @@
+.create-post{
+    background: #fff;
+    padding: 2rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    min-width: 300px;
+    display: flex;
+    align-items: stretch;
+    gap: 1rem;
+
+    form {
+      display: flex;
+      gap: 1rem;
+
+      label {
+        font-size: 0.95rem;
+        color: #1c1e21;
+        margin-bottom: 0.2rem;
+      }
+
+      input {
+        padding: 0.7rem;
+        border: 1px solid #dddfe2;
+        border-radius: 6px;
+        font-size: 1rem;
+        background: #f5f6fa;
+        transition: border 0.2s;
+
+        &:focus {
+          border-color: #1877f2;
+          outline: none;
+        }
+      }
+
+      button {
+        margin-top: 0.5rem;
+        padding: 0.7rem;
+        background: #1877f2;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+    }
+}

@@ -40,7 +40,6 @@ export class UserStateService {
     ).pipe(
       map((response: IUserResponse) => {
         this.setUser(response);
-        console.log('Usuário validado:', response);
         return response;
       }),
       catchError((error) => {

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { Feed } from './feed/feed';
 
 const routes: Routes = [ 
-  {path : '', component: Feed, title: 'Feed'},
+  {path : '', loadComponent: () => import('./feed/feed').then(c => c.Feed)},
 ];
 
 @NgModule({

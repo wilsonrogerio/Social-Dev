@@ -8,16 +8,20 @@ import { ILoginResponse } from '../../utils/interfaces/users-interfaces/login-re
 import { IUserResponse } from '../../utils/interfaces/users-interfaces/user-reponse';
 import { RouterOutlet } from '@angular/router';
 import { Header } from "../header/header";
+import { CreatePost } from "../create-post/create-post";
 
 @Component({
   selector: 'app-feed',
-  imports: [CommonModule, Header],
+  imports: [CommonModule, Header,  CreatePost],
   templateUrl: './feed.html',
   styleUrl: './feed.scss'
 })
 export class Feed implements OnInit {
   private postService = inject(PostService);
   private userStateService = inject(UserStateService);
+
+  // Variável para controlar a visibilidade do componente de criação de post
+  createPostVisible: boolean = false;
 
   posts$ : Observable<IPostResponse[]> | null = null;
   currentUser$: IUserResponse | null = null;
@@ -34,9 +38,8 @@ export class Feed implements OnInit {
     this.userStateService.user$.subscribe(user => {
       this.currentUser$ = user;
       this.userName =  user ? user.name : 'User Name';
-      console.log('Usuário atual:', user);
+      
     });   
-    
   }
   
 }
