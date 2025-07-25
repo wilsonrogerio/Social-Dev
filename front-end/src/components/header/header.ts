@@ -1,9 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { UserStateService } from '../../utils/services/users/user-state-service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.scss'
 })

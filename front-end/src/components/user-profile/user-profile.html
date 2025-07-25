@@ -1,0 +1,27 @@
+<app-header></app-header>
+<div class="user-profile">
+  <h1>Perfil do Usuário</h1>
+  @if( user$ != null ) {
+    <div class="user-details">
+      <p><strong>Nome: </strong>{{user$.name}}</p>
+      <p><strong>Email: </strong>{{user$.email}}</p>
+    </div>
+    <div class="profile-management">
+      <h2>Gerenciamento de Perfil</h2>
+      <form class="change-password-form">
+        <label for="currentPassword">Senha atual</label>
+        <input type="password" id="currentPassword" placeholder="Digite sua senha atual" />
+        <label for="newPassword">Nova senha</label>
+        <input type="password" id="newPassword" placeholder="Digite a nova senha" />
+        <label for="confirmPassword">Confirmar nova senha</label>
+        <input type="password" id="confirmPassword" placeholder="Confirme a nova senha" />
+        <button type="submit">Alterar Senha</button>
+      </form>
+      <form class="change-photo-form">
+        <label for="profilePhoto">Trocar foto de perfil</label>
+        <input type="file" id="profilePhoto" accept="image/*" disabled="true" placeholder=" em breve"/>
+        <button type="submit" [disabled]="true">Atualizar Foto</button>
+      </form>
+    </div>
+  }
+</div>

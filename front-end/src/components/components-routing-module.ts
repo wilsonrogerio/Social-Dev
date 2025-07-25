@@ -4,6 +4,7 @@ import { Feed } from './feed/feed';
 
 const routes: Routes = [ 
   {path : '', loadComponent: () => import('./feed/feed').then(c => c.Feed)},
+  {path: 'profile', loadComponent: () => import('./user-profile/user-profile').then(c => c.UserProfile)},
 ];
 
 @NgModule({
