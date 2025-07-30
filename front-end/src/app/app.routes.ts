@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { Feed } from '../components/feed/feed';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },

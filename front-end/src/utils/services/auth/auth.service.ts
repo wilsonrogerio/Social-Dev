@@ -43,9 +43,4 @@ export class AuthService {
   }
 
   
-  logout() {
-    // Limpa o token do localStorage e atualiza o estado do usuário
-    localStorage.removeItem('token');
-    this.userStateService.setUser(null);
-  }
 }

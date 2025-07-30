@@ -26,6 +26,11 @@ export class UserStateService {
   setUser(user: IUserResponse | null): void {
     this.userSubject.next(user);
   }
+  logout() {
+    // Limpa o token do localStorage e atualiza o estado do usuário
+    localStorage.removeItem('token');
+    this.setUser(null);
+  }
 
   validateUser(): Observable<IUserResponse | null> {
     // Verifica se o token existe no localStorage
